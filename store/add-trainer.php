@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "error";
         }
     } else {
-        echo "all field are required";
+        echo "all field are required to be filled";
     }
 } else {
     echo "invalid request";

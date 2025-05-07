@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Error: " . $stmt->error;
         }
     } else {
-        echo "All fields are required.";
+        echo "ALL FIELDS ARE REQUIRED TO BE FILLED.";
     }
 } else {
     echo "Invalid request.";

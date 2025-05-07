@@ -31,9 +31,10 @@ if ($conn->query($sql) === TRUE) {
     die("Error creating table");
 }
 
-$sql = "CREATE TABLE IF NOT EXISTS Membership (
-membership_id INT PRIMARY KEY AUTO_INCREMENT,
-type ENUM('SILVER','GOLD','PLATINUM') NOT NULL,
+$sql = "CREATE TABLE IF NOT EXISTS membership (
+membership_id INT AUTO_INCREMENT PRIMARY KEY,
+member_name VARCHAR(100),
+membership_type ENUM('SILVER','GOLD','PLATINUM') NOT NULL,
 price DECIMAL(10,2) NOT NULL, 
 duration INT NOT NULL,
 start_date DATE,
@@ -43,23 +44,37 @@ end_date DATE
 if ($conn->query($sql) === TRUE) {
     echo "membership created successfully" . "<br>";
 } else {
-    die("error creating table") . $conn->error;
+    die("error creating table: " . $conn->error);
 }
 
-$sql = "CREATE TABLE IF NOT EXISTS member (
-member_id INT PRIMARY KEY AUTO_INCREMENT,
-name VARCHAR(100) NOT NULL,
-phone VARCHAR(15) UNIQUE,
-email VARCHAR(100),
-membership_id INT,
-trainer_id INT,
-FOREIGN KEY (membership_id) REFERENCES Membership(membership_id) ON DELETE SET NULL,
-FOREIGN KEY (trainer_id) REFERENCES trainer(trainer_id) ON DELETE SET NULL
+$sql = "CREATE TABLE IF NOT EXISTS members (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    phone VARCHAR(15) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    membership_id INT,
+    trainer_id INT,
+    FOREIGN KEY (membership_id) REFERENCES Membership(membership_id) ON DELETE SET NULL,
+    FOREIGN KEY (trainer_id) REFERENCES trainer(trainer_id) ON DELETE SET NULL
 )";
 if ($conn->query($sql) === TRUE) {
     echo "member created successfully" . "<br>";
 } else {
-    die("error creating table") . $conn->error;
+    die("error creating table: " . $conn->error);
+}
+
+$sql = "CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    phone VARCHAR(15) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    isadmin BOOLEAN DEFAULT FALSE
+)";
+if ($conn->query($sql) === TRUE) {
+    echo "users created successfully" . "<br>";
+} else {
+    die("error creating table: " . $conn->error);
 }
 
 $sql = "CREATE TABLE IF NOT EXISTS equipment (
@@ -72,7 +87,7 @@ price DECIMAL(10,2)
 if ($conn->query($sql) === TRUE) {
     echo "equipment created successfully" . "<br>";
 } else {
-    die("error creating table") . $conn->error;
+    die("error creating table: " . $conn->error);
 }
 
 $conn->close();
