@@ -9,10 +9,14 @@
 </head>
 
 <body>
-    <a href="./creation/create-equipment.php"> create equipment</a>
-    <a href="./show-equipment.php"> show equipment</a>
-    <a href="./creation/create-trainer.php"> create trainer</a>
-    <a href="./show-trainer.php"> show trainer</a>
+   <div class="menu">
+    <ul class="menu-content">
+        <li><a href="#"><span class="material-symbols-outlined">Home</span></a></li>
+        <li><a href="#"><span class="material-symbols-outlined">Dashboard</span></a></li>
+        <li><a href="#"><span class="material-symbols-outlined">Account</span></a></li>
+        <li><a href="#"><span class="material-symbols-outlined">Setting</span></a></li>
+    </ul>
+   </div>
 </body>
 
 </html>

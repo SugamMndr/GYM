@@ -26,7 +26,7 @@ include '../template/header.php';
             <input type="number" class="form-control" name="price">
         </div>
         <div class="col-12">
-            <input type="submit" class="btn btn-primary" value="submit"></input>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
 </main>
