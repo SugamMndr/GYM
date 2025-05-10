@@ -1,30 +1,35 @@
-<?php include('../link/connect.php');
+<?php
+require_once ROOT . '/link/connect.php';
 
-if ($_SERVER['REQUEST_METHOD'] === "POST") {
-    $member_name = trim($_POST["member_name"]);
-    $membership_type = trim($_POST["membership-type"]);
-    $start_date = trim($_POST["start-date"]);
-    $end_date = trim($_POST["end-date"]);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $membership_type = trim($_POST["membership_type"]);
+    $price = trim($_POST["price"]);
 
-    if (!empty($member_name) && !empty($membership_type) && !empty($start_date) && !empty($end_date)){
-    $stmt = $conn->prepare("INSERT INTO membership (member_name, membership_type, start_date, end_date) VALUES (?, ?, ?, ?)");
-    if ($stmt) {
-        $stmt->bind_param("ssss", $member_name, $membership_type, $start_date, $end_date);
-    if($stmt->execute()){
-        $stmt->close();
-        $conn->close();
-        header("Location: ../show-membership.php");
-        exit();
+    if (!empty($membership_type) && !empty($price)) {
+
+        $stmt = $conn->prepare("INSERT INTO membership (membership_type , price) VALUES (?, ?)");
+        $stmt->bind_param("sd", $membership_type, $price);
+
+        if ($stmt->execute()) {
+            $stmt->close();
+            $conn->close();
+
+            header("Location: membership");
+            exit();
+        } else {
+            $_SESSION['message'] = ['type' => 'danger', 'text' => 'Error occurred while inserting data.'];
+            header("Location: create-trainer");
+            exit();
+        }
+
     } else {
-        echo "Execute error: " . $stmt->error;
+        $_SESSION['message'] = ['type' => 'danger', 'text' => 'All fields are required to be filled.'];
+        header("Location: create-membership");
+        exit();
     }
 } else {
-    echo "Prepare failed: " . $conn->error;
-}
-} else {
-echo "All fields are required.";
-}
-} else {
-echo "Invalid request method.";
+    $_SESSION['message'] = ['type' => 'danger', 'text' => 'Invalid request.'];
+    header("Location: create-trainer");
+    exit();
 }
 ?>

@@ -1,20 +1,20 @@
 <?php
 $pageTitle = "Create Equipment";
-include '../template/header.php';
+require_once ROOT . '/view/template/header.php';
 ?>
 
 <main class="container mt-5">
-    <form class="row g-3" action="../store/add-equipment.php" method="POST">
+    <form class="row g-3" action="add-equipment" method="POST">
         <div class="col-md-12">
             <label for="Name" class="form-label">Name</label>
-            <input type="text" name="name" class="form-control" id="Name" placeholder="Name" required>
+            <input type="text" name="name" class="form-control" id="name" placeholder="Name" required>
         </div>
         <div class="col-md-12">
             <label for="status" class="form-label">Condition</label>
             <select name="status" class="form-select">
-                <option value="Working" selected>Working</option>
-                <option value="Under maintainence">Under Maintainence</option>
-                <option value="out of order">Out of order</option>
+                <option value="working" selected>Working</option>
+                <option value="under-maintenance">Under Maintainence</option>
+                <option value="out-of-order">Out of order</option>
             </select>
         </div>
         <div class="col-12">
@@ -43,4 +43,4 @@ include '../template/header.php';
 
 
 
-<?php include '../template/footer.php'; ?>
+<?php require_once ROOT . '/view/template/footer.php'; ?>

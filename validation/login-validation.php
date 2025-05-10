@@ -1,12 +1,17 @@
 <?php
-session_start();
+require_once ROOT . '/link/connect.php';
 
-require_once '../link/connect.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['email'], $_POST['password'])) {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $stmt = $conn->prepare("select * from users where email = ?");
+        $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
+        $password = trim($_POST['password']);
+
+        if (empty($email) || empty($password)) {
+            echo 'Please fill all the fields.';
+            exit();
+        }
+
+        $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -15,22 +20,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $user = $result->fetch_assoc();
             if (password_verify($password, $user['password'])) {
                 $_SESSION['user'] = [
+                    'id' => $user['id'],
                     'name' => $user['name'],
                     'email' => $user['email']
                 ];
-                header('Location: ../dashboard.php');
-                $stmt->close();
-                $conn->close();
+
+                header('Location: trainers');
                 exit();
             } else {
-                echo 'Password does not match';
+                echo htmlspecialchars('Incorrect password.');
             }
         } else {
-            echo 'User does not exists.';
+            echo htmlspecialchars('User does not exist.');
         }
+
+        $stmt->close();
+        $conn->close();
     } else {
-        echo 'Please fill all the field.';
+        echo htmlspecialchars('Please fill all the fields.');
     }
 } else {
-    echo 'Invalid Request';
+    echo htmlspecialchars('Invalid Request.');
 }
+?>
